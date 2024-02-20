@@ -13,9 +13,9 @@ var sendMessageRequest = new SendMessageRequest
     QueueUrl = queueUrlResponse.QueueUrl,
     MessageBody = JsonSerializer.Serialize(new CustomerCreated
     {
-        Email = "test@gmail.com",
+        Email = "gyezekyan13@gmail.com",
         Id = Guid.NewGuid(),
-        Name = "Gagooo"
+        Name = "Gor"
     })
 };
 
