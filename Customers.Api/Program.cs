@@ -1,4 +1,7 @@
-﻿using Customers.Api.Database;
+﻿using Amazon;
+using Amazon.SQS;
+using Customers.Api.Database;
+using Customers.Api.Messaging;
 using Customers.Api.Repositories;
 using Customers.Api.Services;
 using Customers.Api.Validation;
@@ -42,6 +45,10 @@ builder.Services.AddHttpClient("GitHub", httpClient =>
     httpClient.DefaultRequestHeaders.Add(
         HeaderNames.UserAgent, $"Course-{Environment.MachineName}");
 });
+
+builder.Services.Configure<QueueSettings>(config.GetSection(QueueSettings.Key));
+builder.Services.AddSingleton<IAmazonSQS>(_ => new AmazonSQSClient(RegionEndpoint.USEast1));
+builder.Services.AddSingleton<ISqsMessenger, SqsMessenger>();
 
 var app = builder.Build();
 
