@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqsPublisher", "SqsPublishe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqsConsumer", "SqsConsumer\SqsConsumer.csproj", "{8255ABAF-9677-4A17-AAA3-3D40B362ACE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Api", "C:\Users\gor.yezekyan\Downloads\3.6\aws-fundamentals-final-master\3.Sqs\Customers.Api\Customers.Api.csproj", "{789490C9-B0FE-46F9-9F04-E48F7F7A6E81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Api", "Customers.Api\Customers.Api.csproj", "{423C72E9-13D1-43BD-98A3-94AECD6DC52F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,7 +16,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6679DD4F-688C-4696-AD3E-63A49F7BF325} = {0A60A498-B0D5-446D-9C8C-7C11FCE89285}
 		{8255ABAF-9677-4A17-AAA3-3D40B362ACE9} = {0A60A498-B0D5-446D-9C8C-7C11FCE89285}
-		{789490C9-B0FE-46F9-9F04-E48F7F7A6E81} = {0A60A498-B0D5-446D-9C8C-7C11FCE89285}
+		{423C72E9-13D1-43BD-98A3-94AECD6DC52F} = {0A60A498-B0D5-446D-9C8C-7C11FCE89285}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6679DD4F-688C-4696-AD3E-63A49F7BF325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -27,9 +27,9 @@ Global
 		{8255ABAF-9677-4A17-AAA3-3D40B362ACE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8255ABAF-9677-4A17-AAA3-3D40B362ACE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8255ABAF-9677-4A17-AAA3-3D40B362ACE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{789490C9-B0FE-46F9-9F04-E48F7F7A6E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{789490C9-B0FE-46F9-9F04-E48F7F7A6E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{789490C9-B0FE-46F9-9F04-E48F7F7A6E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{789490C9-B0FE-46F9-9F04-E48F7F7A6E81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{423C72E9-13D1-43BD-98A3-94AECD6DC52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{423C72E9-13D1-43BD-98A3-94AECD6DC52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{423C72E9-13D1-43BD-98A3-94AECD6DC52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{423C72E9-13D1-43BD-98A3-94AECD6DC52F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
