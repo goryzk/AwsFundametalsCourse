@@ -1,3 +1,3 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using S3Playground;
 
-Console.WriteLine("Hello, World!");
+await new S3Helper().DownloadFile();
