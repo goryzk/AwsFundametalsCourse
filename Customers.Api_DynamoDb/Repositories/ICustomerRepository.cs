@@ -13,4 +13,6 @@ public interface ICustomerRepository
     Task<bool> UpdateAsync(CustomerDto customer);
 
     Task<bool> DeleteAsync(Guid id);
+
+    Task<CustomerDto> GetByEmailAsync(string idOrEmail);
 }

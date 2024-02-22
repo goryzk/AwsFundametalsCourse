@@ -34,6 +34,24 @@ public class CustomerController(ICustomerService customerService) : ControllerBa
         return Ok(customerResponse);
     }
     
+    [HttpGet("customers/{idOrEmail}")]
+    public async Task<IActionResult> Get([FromRoute] string idOrEmail)
+    {
+        var isGuid = Guid.TryParse(idOrEmail, out var id);
+
+        var customer = isGuid
+            ? await customerService.GetAsync(id)
+            : await customerService.GetByEmailAsync(idOrEmail);
+
+        if (customer is null)
+        {
+            return NotFound();
+        }
+
+        var customerResponse = customer.ToCustomerResponse();
+        return Ok(customerResponse);
+    }
+    
     [HttpGet("customers")]
     public async Task<IActionResult> GetAll()
     {

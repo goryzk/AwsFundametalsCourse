@@ -46,10 +46,48 @@ public class CustomerRepository(IAmazonDynamoDB amazonDynamoDb) : ICustomerRepos
         var itemAsDocument = Document.FromAttributeMap(response.Item);
         return JsonSerializer.Deserialize<CustomerDto>(itemAsDocument.ToJson());
     }
+    
+    public async Task<CustomerDto> GetByEmailAsync(string email)
+    {
+        var queryRequest = new QueryRequest
+        {
+            TableName = _tableItem,
+            IndexName = "Email-Id-index",
+            KeyConditionExpression = "Email = :v_Email",
+            ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+            {
+                {
+                    ":v_Email", new AttributeValue
+                    {
+                        S = email
+                    }
+                }
+            }
+        };
+        
+        var response = await amazonDynamoDb.QueryAsync(queryRequest);
+        if (response.Items.Count == 0)
+        {
+            return null;
+        }
+
+        var itemAsDocument = Document.FromAttributeMap(response.Items.FirstOrDefault());
+        return JsonSerializer.Deserialize<CustomerDto>(itemAsDocument.ToJson())!;
+    }
 
     public async Task<IEnumerable<CustomerDto>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var scanRequest = new ScanRequest
+        {
+            TableName = _tableItem
+        };
+
+        var response = await amazonDynamoDb.ScanAsync(scanRequest);
+        return response.Items.Select(x =>
+        {
+            var json = Document.FromAttributeMap(x).ToJson();
+            return JsonSerializer.Deserialize<CustomerDto>(json);
+        })!;
     }
 
     public async Task<bool> UpdateAsync(CustomerDto customer)
@@ -70,6 +108,17 @@ public class CustomerRepository(IAmazonDynamoDB amazonDynamoDb) : ICustomerRepos
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var deleteItemRequest = new DeleteItemRequest
+        {
+            TableName = _tableItem,
+            Key = new Dictionary<string, AttributeValue>
+            {
+                { "pk", new AttributeValue { S = id.ToString() } },
+                { "sk", new AttributeValue { S = id.ToString() } },
+            }
+        };
+
+        var response = await amazonDynamoDb.DeleteItemAsync(deleteItemRequest);
+        return response.HttpStatusCode == HttpStatusCode.OK;
     }
 }

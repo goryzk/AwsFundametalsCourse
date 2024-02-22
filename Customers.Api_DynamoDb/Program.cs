@@ -1,3 +1,5 @@
+using Amazon;
+using Amazon.DynamoDBv2;
 using Customers.Api.Repositories;
 using Customers.Api.Services;
 using Customers.Api.Validation;
@@ -24,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSingleton<ICustomerService, CustomerService>();
 builder.Services.AddSingleton<IGitHubService, GitHubService>();
+builder.Services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>(_ => new AmazonDynamoDBClient(RegionEndpoint.USEast1));
 
 builder.Services.AddHttpClient("GitHub", httpClient =>
 {

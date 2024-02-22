@@ -20,3 +20,22 @@ public class Movie
 
     public int RottenTomatoesPercentage { get; set; }
 }
+
+public class MovieVip
+{
+    [JsonPropertyName("pk")]
+    public string Pk => Title.ToString();
+    
+    [JsonPropertyName("sk")]
+    public string Sk => RottenTomatoesPercentage.ToString();
+    
+    public Guid Id { get; set; }
+
+    public string Title { get; set; } = default!;
+
+    public int ReleaseYear { get; set; }
+
+    public int AgeRestriction { get; set; }
+
+    public int RottenTomatoesPercentage { get; set; }
+}

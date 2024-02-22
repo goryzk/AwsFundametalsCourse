@@ -42,7 +42,7 @@ public class DataSeeder
 
             var createItemRequest = new PutItemRequest
             {
-                TableName = "movies",
+                TableName = "movies_vip",
                 Item = itemAsAttributes
             };
 
