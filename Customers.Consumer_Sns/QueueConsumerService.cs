@@ -30,8 +30,8 @@ public class QueueConsumerService : BackgroundService
         var receiveResponse = new ReceiveMessageRequest
         {
             QueueUrl = queueUrl,
-            AttributeNames = ["All"],
-            MessageAttributeNames = ["All"],
+            AttributeNames = new List<string>{"All"},
+            MessageAttributeNames = new List<string>{"All"},
             MaxNumberOfMessages = 1,
         };
 

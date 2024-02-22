@@ -8,30 +8,18 @@ using FluentValidation.Results;
 
 namespace Customers.Api.Services;
 
-public class CustomerService : ICustomerService
+public class CustomerService(ICustomerRepository customerRepository, IGitHubService gitHubService, ISqsMessenger sqsMessenger) : ICustomerService
 {
-    private readonly ICustomerRepository _customerRepository;
-    private readonly IGitHubService _gitHubService;
-    private readonly ISqsMessenger _sqsMessenger;
-
-    public CustomerService(ICustomerRepository customerRepository, 
-        IGitHubService gitHubService, ISqsMessenger sqsMessenger)
-    {
-        _customerRepository = customerRepository;
-        _gitHubService = gitHubService;
-        _sqsMessenger = sqsMessenger;
-    }
-
     public async Task<bool> CreateAsync(Customer customer)
     {
-        var existingUser = await _customerRepository.GetAsync(customer.Id);
+        var existingUser = await customerRepository.GetAsync(customer.Id);
         if (existingUser is not null)
         {
             var message = $"A user with id {customer.Id} already exists";
             throw new ValidationException(message, GenerateValidationError(nameof(Customer), message));
         }
 
-        var isValidGitHubUser = await _gitHubService.IsValidGitHubUser(customer.GitHubUsername);
+        var isValidGitHubUser = await gitHubService.IsValidGitHubUser(customer.GitHubUsername);
         if (!isValidGitHubUser)
         {
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
@@ -39,10 +27,10 @@ public class CustomerService : ICustomerService
         }
         
         var customerDto = customer.ToCustomerDto();
-        var response = await _customerRepository.CreateAsync(customerDto);
+        var response = await customerRepository.CreateAsync(customerDto);
         if (response)
         {
-            await _sqsMessenger.SendMessageAsync(customer.ToCustomerCreatedMessage());
+            await sqsMessenger.SendMessageAsync(customer.ToCustomerCreatedMessage());
         }
 
         return response;
@@ -50,13 +38,13 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer?> GetAsync(Guid id)
     {
-        var customerDto = await _customerRepository.GetAsync(id);
+        var customerDto = await customerRepository.GetAsync(id);
         return customerDto?.ToCustomer();
     }
 
     public async Task<IEnumerable<Customer>> GetAllAsync()
     {
-        var customerDtos = await _customerRepository.GetAllAsync();
+        var customerDtos = await customerRepository.GetAllAsync();
         return customerDtos.Select(x => x.ToCustomer());
     }
 
@@ -64,18 +52,18 @@ public class CustomerService : ICustomerService
     {
         var customerDto = customer.ToCustomerDto();
         
-        var isValidGitHubUser = await _gitHubService.IsValidGitHubUser(customer.GitHubUsername);
+        var isValidGitHubUser = await gitHubService.IsValidGitHubUser(customer.GitHubUsername);
         if (!isValidGitHubUser)
         {
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
             throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
         
-        var response = await _customerRepository.UpdateAsync(customerDto);
+        var response = await customerRepository.UpdateAsync(customerDto);
         
         if (response)
         {
-            await _sqsMessenger.SendMessageAsync(customer.ToCustomerUpdatedMessage());
+            await sqsMessenger.SendMessageAsync(customer.ToCustomerUpdatedMessage());
         }
 
         return response;
@@ -83,10 +71,10 @@ public class CustomerService : ICustomerService
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var response = await _customerRepository.DeleteAsync(id);
+        var response = await customerRepository.DeleteAsync(id);
         if (response)
         {
-            await _sqsMessenger.SendMessageAsync(new CustomerDeleted
+            await sqsMessenger.SendMessageAsync(new CustomerDeleted
             {
                 Id = id
             });
